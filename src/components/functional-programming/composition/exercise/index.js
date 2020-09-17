@@ -7,15 +7,27 @@ const removeSpaces = (text) => text.replace(/\s/g, "");
 const removeNumbers = (text) => text.replace(/[0-9]/g, "");
 
 // 🚧 Task 0: comment out the following transformText function and uncomment the one bellow
-export const transformText = (text) =>
-  toUpperCase(removeSpaces(removeNumbers(text)));
+// export const transformText = (text) =>
+//   toUpperCase(removeSpaces(removeNumbers(text)));
+
+const compose = ( ...fns ) => ( text ) => {
+
+    return fns.reduceRight( ( accumulator, currentFn ) => {
+        console.info( "accumulator", accumulator );
+        return currentFn( accumulator );
+    }, text );
+
+}
 
 // 🚧 Task 1: implement the following compose function
-// export const transformText = compose(
-//   toUpperCase,
-//   removeNumbers,
-//   removeSpaces
-// );
+export const transformText = compose(
+  toUpperCase,
+  removeNumbers,
+  removeSpaces
+);
+
+
+
 // 🕵️‍♀️Hints:
 // - The compose function should return another function (think of the previous addFive, same idea)
 // - Spread the arguments of the compose function

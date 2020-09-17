@@ -3,11 +3,17 @@
 // Open the console on your browser and type [closure exercise] in the console filter.
 // You should see on the console the console.log() for this exercise.
 
-function add() {}
+function add( data ) {
+
+    return ( toAdd ) => {
+        return toAdd + data;
+    };
+
+}
 
 const addFive = add(5);
 
 let result;
-// result = addFive(7); // should output 12
+result = addFive(7); // should output 12
 
 console.log(`[closure exercise] addFive(7) is ${result}`);
