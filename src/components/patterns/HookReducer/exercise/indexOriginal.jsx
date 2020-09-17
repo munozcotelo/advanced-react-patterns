@@ -1,23 +1,48 @@
 /* eslint-disable no-unused-vars */
-import React, {useEffect} from "react";
+import React from "react";
 
-const useForm = (initialValues, onSubmit, validate) => {
+function reducer(state, action) {
+  switch (action.type) {
+    // 🚧 Add a SET_ERRORS case that adds an errors key to the state with the action.payload
+    // 🕵️‍♀️ You probably want to clear previous errors every time you do SET_ERRORS
+    case "SET_FIELD_VALUE":
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          ...action.payload,
+        },
+      };
+    default:
+      return state;
+  }
+}
+
+function LoginForm(props) {
+  const { initialValues, onSubmit } = props;
+  // 👮‍♀you don't have to edit this validate function
+  const validate = (values) => {
+    let errors = {};
+    if (!values.password) {
+      errors.password = "Password is required";
+    }
+    if (!values.userId) {
+      errors.userId = "User Id is required";
+    }
+    return errors;
+  };
+
   const [state, dispatch] = React.useReducer(reducer, {
     values: initialValues,
     errors: {},
-    onChange: {}
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (validate) {
       const errors = validate(state.values);
-      dispatch({
-        type: "SET_ERRORS",
-        payload: { errors },
-      })
+      // 🚧 dispatch a SET_ERRORS action with the errors as payload
     }
-  }, [state.values]); 
-
+  }, []); // 🚧 dispatch the SET_ERRORS action only when the state of the input fields change.
 
   const handleChange = (fieldName) => (event) => {
     event.preventDefault();
@@ -40,47 +65,7 @@ const useForm = (initialValues, onSubmit, validate) => {
     onChange: handleChange(fieldName),
   });
 
-  return {handleChange, handleSubmit, getFiedProps, errors: state.errors}
-}
-
-function reducer(state, action) {
-  switch (action.type) {
-    // 🚧 Add a SET_ERRORS case that adds an errors key to the state with the action.payload
-    // 🕵️‍♀️ You probably want to clear previous errors every time you do SET_ERRORS
-    case "SET_FIELD_VALUE":
-      return {
-        ...state,
-        values: {
-          ...state.values,
-          ...action.payload,
-        },
-      };
-    case "SET_ERRORS":
-      return  {
-        ...state,
-        ...action.payload
-      }
-    default:
-      return state;
-  }
-}
-
-function LoginForm(props) {
-  const { initialValues, onSubmit } = props;
-  const {handleChange, handleSubmit, getFiedProps, errors} = useForm(initialValues, onSubmit, validate);
-  // 👮‍♀you don't have to edit this validate function
-  const validate = (values) => {
-    let errors = {};
-
-    if (!values.password) {
-      errors.password = "Password is required";
-    }
-    if (!values.userId) {
-      errors.userId = "User Id is required";
-    }
-    return errors;
-  };
-
+  const { errors } = state;
 
   return (
     <form onSubmit={handleSubmit}>
