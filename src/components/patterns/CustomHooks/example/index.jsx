@@ -14,7 +14,7 @@ export const useIncrement = (initialValue) => {
   return { count, increment };
 };
 
-// Using a custom hook
+// Using a custom hook: (amgarcia) A function that use a hook
 // const ExampleComponent = (props) => {
 //   const { count, increment } = useIncrement(props.initialValue);
 

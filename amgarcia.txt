@@ -1,0 +1,3 @@
+useMemo => devuelve el valor de la funcion
+useCallback => devuelve la funcion
+

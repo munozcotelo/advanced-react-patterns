@@ -18,6 +18,18 @@ const compose = ( ...fns ) => ( text ) => {
     }, text );
 
 }
+// const composeBis = ( ...fns ) => {
+//
+//     return ( text ) => {
+//
+//         return fns.reduceRight( ( accumulator, currentFn ) => {
+//             console.info( "accumulator", accumulator );
+//             return currentFn( accumulator );
+//         }, text );
+//
+//     }
+//
+// }
 
 // 🚧 Task 1: implement the following compose function
 export const transformText = compose(
