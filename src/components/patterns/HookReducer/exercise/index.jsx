@@ -40,7 +40,8 @@ const useForm = (initialValues, onSubmit, validate) => {
     onChange: handleChange(fieldName),
   });
 
-  return {handleChange, handleSubmit, getFiedProps, errors: state.errors}
+  //return {handleChange, handleSubmit, getFieldProps, errors: state.errors}
+  return {handleSubmit, getFieldProps, errors: state.errors}
 }
 
 function reducer(state, action) {
@@ -67,7 +68,7 @@ function reducer(state, action) {
 
 function LoginForm(props) {
   const { initialValues, onSubmit } = props;
-  const {handleChange, handleSubmit, getFiedProps, errors} = useForm(initialValues, onSubmit, validate);
+  
   // 👮‍♀you don't have to edit this validate function
   const validate = (values) => {
     let errors = {};
@@ -81,6 +82,8 @@ function LoginForm(props) {
     return errors;
   };
 
+  //const {handleChange, handleSubmit, getFieldProps, errors} = useForm(initialValues, onSubmit, validate);
+  const {handleSubmit, getFieldProps, errors} = useForm(initialValues, onSubmit, validate);
 
   return (
     <form onSubmit={handleSubmit}>
