@@ -6,6 +6,7 @@ const SET_ERROR = "SET_ERROR";
 
 export const StoreContext = React.createContext();
 // 🚧 1.1 Create a context for the data fetching client
+export const FetchingClientContext = React.createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -24,6 +25,7 @@ const reducer = (state, action) => {
 };
 
 export const GraphQLProvider = ({
+  client,
   children,
   initialState = {
     data: {},
@@ -33,12 +35,26 @@ export const GraphQLProvider = ({
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  //const client = createClient({ url: "https://rickandmortyapi.com/graphql/" });
+
   // 🚧 Part 1.2. Add your ClientProvider inside the return
   return (
-    <StoreContext.Provider value={[state, dispatch]}>
-      {children}
-    </StoreContext.Provider>
+    <FetchingClientContext.Provider value={client}>
+      <StoreContext.Provider value={[state, dispatch]}>
+        {children}
+      </StoreContext.Provider>
+    </FetchingClientContext.Provider>
   );
+};
+
+export const useClient = () => {
+  const client = React.useContext(FetchingClientContext);
+
+  if (client === undefined) {
+    throw new Error("useClient must be used within a xxx");
+  }
+
+  return client;
 };
 
 // 🚧 Bonus exercise, should we use useMemo for this memoized function? Why?
@@ -47,7 +63,11 @@ const memoizedHashGql = memoize(hashGql);
 export const useQuery = (query, { variables }) => {
   // 🚧 1.3. Use the client from the context, instead of this hardcoded implementation. You can create a handy useClient custom hook (almost implemented at the end of the file).
   // Why moving the client to the context? For testing. E.g. https://www.apollographql.com/docs/react/development-testing/testing/#mockedprovider
-  const client = createClient({ url: "https://rickandmortyapi.com/graphql/" });
+  //const client = createClient({ url: "https://rickandmortyapi.com/graphql/" });
+
+  // const client = React.useContext(FetchingClientContext);
+  const client = useClient();
+
   const [state, dispatch] = useContext(StoreContext);
   const { loading, error, data: cache } = state;
   const cacheKey = memoizedHashGql(query, variables);
